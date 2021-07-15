@@ -66,16 +66,20 @@ def index():
     card_data = f'{df["Rating"][df["Rating"]!=0].mean().round(2)}' #be careful with the " and ' 
 
 	# generate plot
-    fig = plt.figure(1, figsize=(20,7))
-    plt.subplot(1,2,1)
-    df.set_index('Title').sort_values('Metascore', ascending=False).head(7).plot.bar(ax=plt.gca(), fontsize=12)
-    plt.title('Rating based on Metascore', fontsize=15)
-    plt.xlabel('')
-    plt.subplot(1,2,2)
-    df.set_index('Title').sort_values('Rating', ascending=False).head(7).plot.bar(ax=plt.gca(), fontsize=12)
-    plt.title('Rating based on Votes', fontsize=15)
-    plt.xlabel('')
-    # fig.suptitle('IMDB Ratings', fontsize=30)
+    fig = plt.figure(1, figsize=(25,8))
+
+    plt.subplot(1,3,1)
+    df[['Title', 'Rating', 'Metascore']].set_index('Title').sort_values('Metascore', ascending=False)\
+    .head(7).plot.bar(ax=plt.gca(), title='Rating based on Metascore', xlabel='')
+
+    plt.subplot(1,3,2)
+    df[['Title', 'Rating', 'Metascore']].set_index('Title').sort_values('Rating', ascending=False)\
+    .head(7).plot.bar(ax=plt.gca(), title='Rating based on IMDB', xlabel='')
+
+    plt.subplot(1,3,3)
+    df.plot.scatter(x='Metascore', y='Rating', s=100, ax=plt.gca(), title="Correlation between the two rating systems")
+
+    fig.suptitle('IMDB Ratings', fontsize=20)
     fig.autofmt_xdate() 
 	
 	# Rendering plot
